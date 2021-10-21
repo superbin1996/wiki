@@ -40,18 +40,20 @@ def newpage(request):
 
 # Display entry content
 def entry(request, name):
-    # mdContent = markdown(util.get_entry(name))
-    # content = mdContent.getvalue()
-    print(name)
+    
+    # Check path of entry
+    if util.get_entry(name) == None:
+        messages.add_message(request, messages.INFO, 'REQUESTED PAGE WAS NOT FOUND.')
+        return render(request, "encyclopedia/error.html", {
+            "messages": messages
+        })
+    else:
+        content = markdowner.convert(util.get_entry(name))
 
-    # markdowner = Markdown()
-
-    content = markdowner.convert(util.get_entry(name))
-
-    return render(request, "encyclopedia/entry.html", { 
-        "content": content,
-        "name": name
-    })
+        return render(request, "encyclopedia/entry.html", { 
+            "content": content,
+            "name": name
+        })
 
 # Edit entry
 def edit(request, name):
