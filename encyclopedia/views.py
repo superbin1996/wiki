@@ -58,8 +58,9 @@ def entry(request, name):
 # Edit entry
 def edit(request, name):
 
-    print(f"edit/{name}")
     content = util.get_entry(name)
+    print(content)
+
 
     # Check if method is POST
     if request.method == "POST":
@@ -71,6 +72,7 @@ def edit(request, name):
 
         else:
             util.save_entry(name, content)
+            content = markdowner.convert(util.get_entry(name))
 
             # Redirect user to home page
             return render(request, "encyclopedia/entry.html", {
